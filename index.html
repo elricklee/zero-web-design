@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#50c4a8">
+  <meta name="description" content="珞珈拾光——在一场轻松的校园合成游戏里收集武汉大学的春日记忆。">
+  <title>珞珈拾光 — 武大春日合成局</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <div class="game-screen">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="珞珈拾光">
+        <span class="brand-seal">珞</span><span><strong>珞珈拾光</strong><small>LUOJIA MEMORY GAME</small></span>
+      </a>
+      <div class="header-stats"><span>✦</span> 本局最高分 <strong id="best-score">0</strong><i></i> 累计拾光 <strong id="lifetime-score">0</strong></div>
+      <div class="top-actions">
+        <button class="top-action" id="open-rank" type="button" aria-label="打开排行榜"><span>♜</span><small>排行榜</small></button>
+        <button class="top-action" id="open-journal" type="button" aria-label="打开珞珈手札"><span>▤</span><small>拾光手札</small><b id="fragment-badge">0</b></button>
+        <button class="top-action" id="sound-button" type="button" aria-label="切换音效"><span>♫</span><small>音效</small></button>
+        <button class="top-action" id="help-button" type="button" aria-label="游戏说明"><span>?</span><small>说明</small></button>
+      </div>
+    </header>
+
+    <main class="game-board">
+      <aside class="left-column" aria-label="分数与技能">
+        <section class="score-card">
+          <div class="ribbon"><span>✿</span> 本局拾光</div>
+          <strong class="score-number" id="score">0</strong>
+          <div class="score-divider"></div>
+          <div class="score-meta"><span>合成次数</span><strong id="merge-count">0</strong></div>
+          <div class="score-meta"><span>最高融合</span><strong id="highest-merge">樱花花瓣</strong></div>
+          <div class="score-meta"><span>春日漫游</span><strong id="timer">02:00</strong></div>
+        </section>
+        <section class="skills-card">
+          <div class="card-title"><span class="title-flower">✦</span><span>珞珈共鸣</span><small>JUICE × 5</small></div>
+          <div class="energy-meter" aria-label="技能能量"><span id="energy-fill"></span></div>
+          <div class="energy-label"><span>合成记忆积攒能量</span><strong id="energy-label">0 / 5</strong></div>
+          <button class="skill-card" id="skill-button" type="button" disabled>
+            <span class="skill-art">✧</span><span class="skill-copy"><strong>春风拂落</strong><small>清理场上最低级的两枚记忆</small></span><kbd>Q</kbd>
+          </button>
+          <div class="skill-tip">每次融合积攒 1 格能量</div>
+        </section>
+        <div class="left-note"><span>✿</span><p>慢一点，<br>春天会自己落下来。</p><small>NOTES FROM LUOJIA HILL</small></div>
+      </aside>
+
+      <section class="center-column" aria-label="合成游戏">
+        <div class="play-header">
+          <div><span class="live-dot"></span><span id="game-status">珞珈春日漫游中</span></div>
+          <div class="play-tools"><span>02:00 限时挑战</span><button id="pause-button" type="button" aria-label="暂停游戏">Ⅱ</button></div>
+        </div>
+        <div class="playfield-wrap">
+          <canvas id="game-canvas" width="520" height="610" aria-label="合成游戏区域，点击或触摸选择位置并投放校园元素"></canvas>
+          <div class="game-overlay" id="game-overlay">
+            <span class="overlay-flower">✿</span>
+            <p class="overlay-kicker">SPRING AT WUHAN UNIVERSITY</p>
+            <h1 id="overlay-title">珞珈山下，春日正好。</h1>
+            <p id="overlay-copy">点击或触摸场地，投下这一份记忆。<br>让相同的校园元素相遇，合成更美的风景。</p>
+            <button class="start-button" id="start-button" type="button">开始漫游 <span>→</span></button>
+          </div>
+          <div class="playfield-caption"><span>珞珈拾光 · 春日漫游计划</span><span>点击落子 · 相同融合</span></div>
+        </div>
+        <div class="game-controls">
+          <div class="current-piece"><small>即将落下</small><span id="next-icon">🌸</span><strong id="next-name">樱花花瓣</strong></div>
+          <div class="controls-hint"><span>拖动瞄准</span><i></i><span>点击落下</span><i></i><span>相同融合</span></div>
+          <button class="restart-button" id="restart-button" type="button" aria-label="重新开始">↻</button>
+        </div>
+      </section>
+
+      <aside class="right-column" aria-label="下一个元素与融合图鉴">
+        <section class="next-card">
+          <div class="right-heading"><span>下一枚记忆</span><small>NEXT MEMORY</small></div>
+          <div class="next-display"><span id="next-icon-large">🍃</span><span class="next-sparkle">✦</span></div>
+          <strong id="next-name-large">银杏叶</strong>
+          <div class="next-subtitle">把春日，轻轻放进珞珈</div>
+        </section>
+        <section class="encyclopedia-card">
+          <div class="right-heading"><span>融合图鉴</span><button id="open-encyclopedia" type="button">查看详情 ↗</button></div>
+          <p class="encyclopedia-hint">相同的校园记忆，相遇后会进化</p>
+          <div class="evolution-ring" id="evolution-ring" aria-label="校园元素融合进化环"></div>
+          <div class="ring-center"><span>✧</span><small>融合<br>进化</small></div>
+          <div class="encyclopedia-progress"><span id="discovered-count">已发现 1 / 8</span><span>✿</span></div>
+        </section>
+        <button class="journal-card" id="journal-card" type="button">
+          <span class="journal-icon">▧</span><span><strong>珞珈手札</strong><small>集齐 4 片，拼成校园风景</small></span><span class="journal-arrow">→</span>
+          <span class="journal-progress"><i id="journal-progress"></i></span>
+        </button>
+        <button class="rank-card" id="rank-card" type="button">
+          <span class="rank-icon">♜</span><span><strong>珞珈拾光榜</strong><small>看看谁收集了最多春天</small></span><span class="journal-arrow">→</span>
+        </button>
+      </aside>
+    </main>
+    <footer class="screen-footer"><span>武汉大学 · 珞珈拾光</span><span>把珞珈山的春天，合成一场相遇。</span><span>SPRING MEMORY GAME</span></footer>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" type="button" aria-label="关闭">×</button>
+      <div class="modal-kicker" id="modal-kicker">LUOJIA JOURNAL</div>
+      <h2 id="modal-title">珞珈拾光</h2>
+      <div class="modal-content" id="modal-content"></div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
